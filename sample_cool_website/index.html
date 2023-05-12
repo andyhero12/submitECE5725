@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Starter Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+    <!-- Custom styles for this template -->
+    <link href="starter-template.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!-- <script src="../../assets/js/ie-emulation-modes-warning.js"></script> -->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Networked Square Shootout</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#intro">Introduction</a></li>
+            <li><a href="#obj">Project Objective</a></li>
+            <li><a href="#design">Design</a></li>
+            <li><a href="#drawings">Drawings</a></li>
+            <li><a href="#testing">Testing</a></li>
+            <li><a href="#result">Result</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div class="starter-template">
+        <h1>Networked Square Shootout</h1>
+        <p class="lead">ECE 5725 2023SP<br>A Project By Andrew Cheng, Eric Sun</p>
+      </div>
+
+      <hr>
+      <div class="center-block">
+          <iframe width="640" height="360" src="https://www.youtube.com/embed/GuM8vTq0jd4" frameborder="0" allowfullscreen></iframe>
+          <h4 style="text-align:center;">Demonstration Video</h4>
+      </div>
+
+      <hr id="intro">
+
+      <div style="text-align:center;">
+              <h2>Introduction</h2>
+              <p style="text-align: left;padding: 0px 30px;">Welcome to an incredible world where technology and gaming collide! In this thrilling adventure, we delve into the realm of TCP internet connection sockets, 
+                Pygame, and the mesmerizing TFT display. Prepare to witness a revolution in gaming as 
+                we unlock the secrets of creating a captivating field of vision, complete with bullet-shooting action and seamless movement.
+                We take things a step further by designing meticulously crafted data structures that will be serialized through the very sockets 
+                that connect our players. The organization and efficiency of the Model-View-Controller (MVC) pattern takes center stage, with one Raspberry Pi proudly assuming 
+                the role of the server, while both Pi devices seamlessly transform into powerful clients.
+                Additionally, we embrace cross-platform compatibility, ensuring that this epic gaming experience transcends limitations. With the addition of cross-platform play, 
+                the possibilities become limitless, opening doors to an immersive journey that transcends the confines of a single device.
+                Get ready to embark on a gaming adventure like no other, where technology meets imagination and the boundaries of possibility are shattered. Welcome to the future of gaming!
+                
+                </p>
+      </div>
+
+    <hr id='obj'>
+
+      <div class="row">
+          <div class="col-md-4" style="text-align:center;">
+          <img class="img-rounded" src="pics/1.jpg" alt="Generic placeholder image" width="240" height="240">
+          </div>
+          <div class="col-md-8" style="font-size:18px;">
+          <h2>Project Objective:</h2>
+          <ul>
+              <li>
+                Our primary objective was to synergize the fundamental principles of software engineering with the core components of hardware, namely the Raspberry Pi and the PiTFT. 
+                Our focus centered on creating an engaging multiplayer game where two players could connect and engage in thrilling battles within a captivating darkness. To ensure seamless connectivity, we employed a reliable TCP connection that kept the players united in their quest for victory. Get ready for an exciting gaming experience that will keep you on the edge of your seat!.</li>
+                <li>A secondary objective was the incorporation of a true server-client model for modern gaming. Through the model, players could play cross-platform, and there could be multiple games hosted on a single server.</li>
+          </ul>
+          </div>
+      </div>
+
+    <hr id='design'>
+
+      <div style="text-align:center;">
+              <h2>Design</h2>
+              <p style="text-align: left;padding: 0px 30px;">Our game is multiplayer on at least two distinct devices, so we first needed our Raspberry Pi to communicate with each other. We decided to use the socket Python library to send data over a TCP connection. The socket API calls to open and configure a network socket are available to consult in the documentation. We used IPv4 and chose all clients and servers to use Port 5555. However, we needed to spend significant effort on configuring the network sockets, especially the IP address, since on different runs, DHCP may assign our our server code a different address by the network router. 
+                We also leveraged the pickle library to send over network sockets. Pickle serializes Python data types into a byte stream that can be pushed through a socket and deserialized back into a Python data structure on the other end.
+                We designed our shooter game using the MVC pattern (model, view, controller). In the client-server interaction, the server acts as the model, keeping track of the game state. The clients act as the view component, which displays the view sent by the server. And the client also acts as the controller, sending user interactions such as touchscreen presses and button presses to the server to update the state of the game. 
+                We designed a class that would be pickled and unpickled called ShootDTO (shoot data transfer object). Ideally, there would be two separate DTOs, one that the server sends to the client to display the game state and one that the client sends to the server to inform the server of user interactions. However, we ended up using a unified DTO that contained both types of fields. To prevent a client from “hacking” and having a greater field of vision than it should, we cleared fields that the client should not have to know before sending, such as the location of other players outside its field of vision.
+                Data that the client sends comprises user interactions such as button presses to control the movement of the player and taps on the TFT to shoot bullets. We did some computations on the client's end. Based on the coordinates of the button tap and the player, we calculated a unit 2-D directional vector to indicate the direction in which the bullet should move and send it to the server. 
+                We utilized the core component of Pygame's objects and frame generation. Each frame consisted of multiple bullets, clients, and screens being “blipped” on and off. Each frame consisted of individual moments and client actions that would be reflected across all clients. The pygame framework provided a strong backbone for implementing our game that we used to springboard into more complexities that the Raspberry Pi provided. Overall, the usage of pygame accelerated the development of our game and contributed to many of the key features that we utilized. 
+                One of the core features of our game is the ability for cross-platform capability. Whether it is multi Raspberry Pi's playing against each other, multiple laptops against each other, or even a Raspberry Pi playing against a laptop, each circumstance can play. We sought to reduce the number of restrictions for people. Each group of two players who connect to our server is delegated their own room. All players are set to the same rules regardless of the platform that they play on. 
+                </p>
+      </div>
+
+    <hr id='drawings'>
+
+      <div style="text-align:center;">
+              <h2>Drawings</h2>
+              <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
+      </div>
+
+    <hr id='testing'>
+
+      <div style="text-align:center;">
+              <h2>Testing</h2>
+              <p style="text-align: left;padding: 0px 30px;">
+                Our testing consisted of two main components Software and Hardware. For Software, our testing consisted of making sure our server-client connection was stable, working, and without bugs. Within our testing, 
+                we found many bugs, including overfilling packet requests, a lack of updates sent from the server, and no connection between the server and the client. 
+                For the overfilling packets, we realized that we were continuously increasing the size of the packet being sent to the server by repeatedly appending another object to the 
+                server. We found that limiting the number of objects appended and fixing the logic of the game allowed us to limit the resulting overflow of each packet. 
+                Secondly, there were many times that our connection would be unstable due to the lack of acknowledgments from the server. As a result, we switched to a more reliable library using Pickle and Socket.
+                Through these two libraries, the connection became more secure and reliable to run our server-client interface. On the other hand, hardware testing mainly required us to manipulate the PiTFT and the various GPIO buttons on the 
+                Raspberry PI. We repeatedly went to old labs to backtest various buttons that we were using. Additionally, we chose a test-driven development route by incrementally 
+              increasing the number of buttons used. Afterward, we added the on-screen functionality by adding bullets to our characters. Each component of hardware was also tested many times through our Software. When we deduced that our Software was 
+              running properly on our hardware, we would move that software to our other instances of Raspberry Pi to test the functionality of the other Raspberry Pi. This lead to stronger back compatibility and cross-checking.</p>
+      </div>
+
+    <hr id='result'>
+
+      <div style="text-align:center;">
+              <h2>Result</h2>
+              <p style="text-align: left;padding: 0px 30px;">For our project, everything ended up going as planned. Although we had many deviations in the overall idea of our project, the resulting pygame, PiTFT, GPIO centric game resulted as planned. Our team met the software and the hardware requirements for our project. For software, our main focus consisted of a working game that would be playable across platforms and support multiple clients at a single time. Furthermore, we wanted to make sure that the game that would be played was very smooth and provided a good user experience. For hardware, we incorporated every component of the Raspberry Pi we wanted. For the PiTFT, we had initially wanted to just be able to fire into the four quadrant directions. However, after careful engineering of the screen coordinates we were able to improve the directional capabilities of our game. Additionally, the motion control integrated very smoothly into the four buttons provided on the Raspberry Pi. </p>
+      </div>
+
+    <hr>
+
+    <div class="row" style="text-align:center;">
+          <h2>Work Distribution</h2>
+          <div style="text-align:center;">
+              <img class="img-rounded" src="pics/group.png" alt="Generic placeholder image" style="width:80%;">
+              <h4>Project group picture</h4>
+          </div>
+          <div class="col-md-6" style="font-size:16px">
+              <img class="img-rounded" src="pics/Andrew.png" alt="Generic placeholder image" width="240" height="240">
+              <h3>Andrew Cheng</h3>
+              <p class="lead">akc55@cornell.edu</p>
+              <p>Constructed the Software Focus of the game by building out the client facing code for players that connect to the server.
+                 Enabled the ability for multiple Raspberry Pi's to interface with the same server leading to multiple concurrent games at once.
+          </div>
+          <div class="col-md-6" style="font-size:16px">
+              <img class="img-rounded" src="pics/eric.png" alt="Generic placeholder image" width="240" height="240">
+              <h3>Eric Sun</h3>
+              <p class="lead">eds228@cornell.edu</p>
+              <p>Constructed the hardware connection of the game by interfacing with the Raspberry Pi, building out the connection between the servers and the clients. 
+                Made the game multi platform by allowing different forms of user input to introduce the same output.
+          </div>
+      </div>
+
+    <hr>
+      <div style="font-size:18px">
+          <h2>Parts List</h2>
+          <ul>
+              <li>1 Raspberry Pi 4 $35.00</li>
+              <li>1 Raspberry Pi 3 $35.00</li>
+              <li>2 PiTFT TFT+Touchscreen for Raspberry Pi Adafruit $70.00</li>
+          </ul>
+          <h3>Total: $140</h3>
+      </div>
+      <hr>
+      <div style="font-size:18px">
+          <h2>References</h2>
+          <a href="https://learn.adafruit.com/adafruit-pitft-28-inch-resistive-touchscreen-display-raspberry-pi/downloads">PiTFT document</a><br>
+          <a href="https://www.pygame.org/docs/">Pygame Documentation</a><br>
+          <a href="https://sourceforge.net/p/raspberry-gpio-python/wiki/Home/">R-Pi GPIO Document</a><br>
+          <a href="https://docs.python.org/3/library/pickle.html">Pickle Documentation</a><br>
+          <a href="https://docs.python.org/3/library/socket.html">Socket Documentation</a><br>
+
+      </div>
+
+    <hr>
+
+      <div class="row">
+              <h2>Code Appendix</h2>
+              <pre><code>
+
+#IP Setup for Game Calibration
+import socket
+
+# Get the host name
+hostname = socket.gethostname()
+
+# Get the IP address associated with the host
+ip_address = socket.gethostbyname(hostname)
+
+print("Hostname:", hostname)
+print("IP address:", ip_address)
+              </code></pre>
+
+            </code></pre>
+
+          </code></pre>
+      </div>
+
+    </div><!-- /.container -->
+
+
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
+  </body>
+</html>
